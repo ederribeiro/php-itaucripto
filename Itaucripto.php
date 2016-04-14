@@ -155,38 +155,57 @@ class Itaucripto
 		return $str1;
 	}
 
-	//$codEmp,$pedido,$valor,$observacao,$chave,$nomeSacado,$codigoInscricao,$numeroInscricao,$enderecoSacado,$bairroSacado,$cepSacado,$cidadeSacado,$estadoSacado,$dataVencimento,$urlRetorna,$obsAd1,$obsAd2,$obsAd3
-	public function geraDados($paramString1, $paramString2, $paramString3, $paramString4, $paramString5, $paramString6, $paramString7, $paramString8, $paramString9, $paramString10, $paramString11, $paramString12, $paramString13, $paramString14, $paramString15, $paramString16, $paramString17, $paramString18)
+	/**
+	 * [geraDados description]
+	 * @param  [string] $pedido          [description]
+	 * @param  [string] $valor           [description]
+	 * @param  [string] $observacao      [description]
+	 * @param  [string] $nomeSacado      [description]
+	 * @param  [string] $codigoInscricao [description]
+	 * @param  [string] $numeroInscricao [description]
+	 * @param  [string] $enderecoSacado  [description]
+	 * @param  [string] $bairroSacado    [description]
+	 * @param  [string] $cepSacado       [description]
+	 * @param  [string] $cidadeSacado    [description]
+	 * @param  [string] $estadoSacado    [description]
+	 * @param  [string] $dataVencimento  [description]
+	 * @param  [string] $urlRetorna      [description]
+	 * @param  [string] $obsAd1          [description]
+	 * @param  [string] $obsAd2          [description]
+	 * @param  [string] $obsAd3          [description]
+	 * @return [mixed]                  [description]
+	 */
+	public function geraDados($pedido, $valor, $observacao, $nomeSacado, $codigoInscricao, $numeroInscricao, $enderecoSacado, $bairroSacado, $cepSacado, $cidadeSacado, $estadoSacado, $dataVencimento, $urlRetorna, $obsAd1, $obsAd2, $obsAd3)
 	{
-		$paramString1 = strtoupper($paramString1);
-		$paramString5 = strtoupper($paramString5);
+		$codEmp = strtoupper($this->codEmp);
+		$chave = strtoupper($this->chave);
 
-		if (strlen($paramString1) != $this->TAM_COD_EMP) {
+		if (strlen($codEmp) != $this->TAM_COD_EMP) {
 			return "Erro: tamanho do codigo da empresa diferente de 26 posições.";
 		}
 
-		if (strlen($paramString5) != $this->TAM_CHAVE) {
+		if (strlen($chave) != $this->TAM_CHAVE) {
 			return "Erro: tamanho da chave da chave diferente de 16 posições.";
 		}
 
-		if ((strlen($paramString2) < 1) || (strlen($paramString2) > 8)) {
+		if ((strlen($pedido) < 1) || (strlen($pedido) > 8)) {
 			return "Erro: número do pedido inválido.";
 		}
 
-		if (is_numeric($paramString2)) {
-			$paramString2 = $this->PreencheZero($paramString2, 8);
+		if (is_numeric($pedido)) {
+			$pedido = $this->PreencheZero($pedido, 8);
 		} else {
 			return "Erro: numero do pedido não é numérico.";
 		}
 
-		if ((strlen($paramString3) < 1) || (strlen($paramString3) > 11)) {
+		if ((strlen($valor) < 1) || (strlen($valor) > 11)) {
 			return "Erro: valor da compra inválido.";
 		}
 
-		$i = strpos($paramString3, ',');
+		$i = strpos($valor, ',');
 
 		if ($i !== FALSE) {
-			$str3 = substr($paramString3, ($i + 1));
+			$str3 = substr($valor, ($i + 1));
 
 			if (!is_numeric($str3)) {
 				return "Erro: valor decimal não é numérico.";
@@ -196,79 +215,79 @@ class Itaucripto
 				return "Erro: valor decimal da compra deve possuir 2 posições após a virgula.";
 			}
 
-			$paramString3 = substr($paramString3, 0, strlen($paramString3) - 3) . $str3;
+			$valor = substr($valor, 0, strlen($valor) - 3) . $str3;
 		} else {
-			if (!is_numeric($paramString3)) {
+			if (!is_numeric($valor)) {
 				return "Erro: valor da compra não é numérico.";
 			}
 
-			if (strlen($paramString3) > 8) {
+			if (strlen($valor) > 8) {
 				return "Erro: valor da compra deve possuir no máximo 8 posições antes da virgula.";
 			}
 
-			$paramString3 = $paramString3 . "00";
+			$valor = $valor . "00";
 		}
 
-		$paramString3 = $this->PreencheZero($paramString3, 10);
+		$valor = $this->PreencheZero($valor, 10);
 
-		$paramString7 = trim($paramString7);
+		$codigoInscricao = trim($codigoInscricao);
 
-		if (($paramString7 != "02") && ($paramString7 != "01") && ($paramString7 != "")) {
+		if (($codigoInscricao != "02") && ($codigoInscricao != "01") && ($codigoInscricao != "")) {
 			return "Erro: código de inscrição inválido.";
 		}
 
-		if (($paramString8 != "") && (!is_numeric($paramString8)) && (strlen($paramString8) > 14)) {
+		if (($numeroInscricao != "") && (!is_numeric($numeroInscricao)) && (strlen($numeroInscricao) > 14)) {
 			return "Erro: número de inscrição inválido.";
 		}
 
-		if (($paramString11 != "") && ((!is_numeric($paramString11)) || (strlen($paramString11) != 8))) {
+		if (($cepSacado != "") && ((!is_numeric($cepSacado)) || (strlen($cepSacado) != 8))) {
 			return "Erro: cep inválido.";
 		}
 
-		if (($paramString14 != "") && ((!is_numeric($paramString14)) || (strlen($paramString14) != 8))) {
+		if (($dataVencimento != "") && ((!is_numeric($dataVencimento)) || (strlen($dataVencimento) != 8))) {
 			return "Erro: data de vencimento inválida.";
 		}
 
-		if (strlen($paramString16) > 60) {
+		if (strlen($obsAd1) > 60) {
 			return "Erro: observação adicional 1 inválida.";
 		}
 
-		if (strlen($paramString17) > 60) {
+		if (strlen($obsAd2) > 60) {
 			return "Erro: observação adicional 2 inválida.";
 		}
 
-		if (strlen($paramString18) > 60) {
+		if (strlen($obsAd3) > 60) {
 			return "Erro: observação adicional 3 inválida.";
 		}
 
 		//Retira os acentos
-		$paramString4 = $this->TiraAcento($paramString4);
-		$paramString6 = $this->TiraAcento($paramString6);
-		$paramString9 = $this->TiraAcento($paramString9);
-		$paramString10 = $this->TiraAcento($paramString10);
-		$paramString12 = $this->TiraAcento($paramString12);
-		$paramString16 = $this->TiraAcento($paramString16);
-		$paramString17 = $this->TiraAcento($paramString17);
-		$paramString18 = $this->TiraAcento($paramString18);
+		$observacao = $this->TiraAcento($observacao);
+		$nomeSacado = $this->TiraAcento($nomeSacado);
+		$enderecoSacado = $this->TiraAcento($enderecoSacado);
+		$bairroSacado = $this->TiraAcento($bairroSacado);
+		$cidadeSacado = $this->TiraAcento($cidadeSacado);
+		$obsAd1 = $this->TiraAcento($obsAd1);
+		$obsAd2 = $this->TiraAcento($obsAd2);
+		$obsAd3 = $this->TiraAcento($obsAd3);
 
-		$paramString4 = $this->PreencheBranco($paramString4, 40);
-		$paramString6 = $this->PreencheBranco($paramString6, 30);
-		$paramString7 = $this->PreencheBranco($paramString7, 2);
-		$paramString8 = $this->PreencheBranco($paramString8, 14);
-		$paramString9 = $this->PreencheBranco($paramString9, 40);
-		$paramString10 = $this->PreencheBranco($paramString10, 15);
-		$paramString11 = $this->PreencheBranco($paramString11, 8);
-		$paramString12 = $this->PreencheBranco($paramString12, 15);
-		$paramString13 = $this->PreencheBranco($paramString13, 2);
-		$paramString14 = $this->PreencheBranco($paramString14, 8);
-		$paramString15 = $this->PreencheBranco($paramString15, 60);
-		$paramString16 = $this->PreencheBranco($paramString16, 60);
-		$paramString17 = $this->PreencheBranco($paramString17, 60);
-		$paramString18 = $this->PreencheBranco($paramString18, 60);
+		$observacao = $this->PreencheBranco($observacao, 40);
+		$nomeSacado = $this->PreencheBranco($nomeSacado, 30);
+		$codigoInscricao = $this->PreencheBranco($codigoInscricao, 2);
+		$numeroInscricao = $this->PreencheBranco($numeroInscricao, 14);
+		$enderecoSacado = $this->PreencheBranco($enderecoSacado, 40);
+		$bairroSacado = $this->PreencheBranco($bairroSacado, 15);
+		$cepSacado = $this->PreencheBranco($cepSacado, 8);
+		$cidadeSacado = $this->PreencheBranco($cidadeSacado, 15);
+		$estadoSacado = $this->PreencheBranco($estadoSacado, 2);
+		$dataVencimento = $this->PreencheBranco($dataVencimento, 8);
+		$urlRetorna = $this->PreencheBranco($urlRetorna, 60);
+		$obsAd1 = $this->PreencheBranco($obsAd1, 60);
+		$obsAd2 = $this->PreencheBranco($obsAd2, 60);
+		$obsAd3 = $this->PreencheBranco($obsAd3, 60);
 
-		$str1 = $this->Algoritmo($paramString2 . $paramString3 . $paramString4 . $paramString6 . $paramString7 . $paramString8 . $paramString9 . $paramString10 . $paramString11 . $paramString12 . $paramString13 . $paramString14 . $paramString15 . $paramString16 . $paramString17 . $paramString18, $paramString5);
+		$str1 = $this->Algoritmo($pedido . $valor . $observacao . $nomeSacado . $codigoInscricao . $numeroInscricao . $enderecoSacado . $bairroSacado . $cepSacado . $cidadeSacado . $estadoSacado . $dataVencimento . $urlRetorna . $obsAd1 . $obsAd2 . $obsAd3, $chave);
 
-		$str2 = $this->Algoritmo($paramString1 . $str1, $this->CHAVE_ITAU);
+		$str2 = $this->Algoritmo($codEmp . $str1, $this->CHAVE_ITAU);
 
 		return $this->Converte($str2);
 	}
