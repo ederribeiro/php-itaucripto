@@ -178,7 +178,7 @@ class Itaucripto
 	public function geraDados($pedido, $valor, $observacao, $nomeSacado, $codigoInscricao, $numeroInscricao, $enderecoSacado, $bairroSacado, $cepSacado, $cidadeSacado, $estadoSacado, $dataVencimento, $urlRetorna, $obsAd1, $obsAd2, $obsAd3)
 	{
 		$codEmp = strtoupper($this->codEmp);
-		$chave = strtoupper($this->chave);
+		$chave = strtoupper($this->key);
 
 		if (strlen($codEmp) != $this->TAM_COD_EMP) {
 			return "Erro: tamanho do codigo da empresa diferente de 26 posições.";
